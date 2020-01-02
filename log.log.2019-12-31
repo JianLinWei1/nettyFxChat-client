@@ -1,0 +1,5 @@
+2019-12-31 10:26:26  [ nioEventLoopGroup-2-1:0 ] - [ INFO ]  连接服务器成功;通道ID:550d5347
+2019-12-31 10:26:30  [ nioEventLoopGroup-3-1:3491 ] - [ INFO ]  连接服务器成功;通道ID:f606baea
+2019-12-31 11:00:31  [ nioEventLoopGroup-2-1:0 ] - [ INFO ]  连接服务器成功;通道ID:398952eb
+2019-12-31 11:57:07  [ nioEventLoopGroup-2-1:0 ] - [ INFO ]  连接服务器成功;通道ID:eebf038d
+2019-12-31 11:57:07  [ JavaFX Application Thread:2 ] - [ INFO ]  发送信息false
