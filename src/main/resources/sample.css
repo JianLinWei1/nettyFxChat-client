@@ -16,3 +16,9 @@
     -fx-background-size: 600px;
 
 }*/
+.videoChatButton{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#5583B1, #20582D);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}

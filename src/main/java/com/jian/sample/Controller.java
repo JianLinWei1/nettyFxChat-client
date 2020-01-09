@@ -17,9 +17,14 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +54,8 @@ public class Controller implements Initializable {
     private TextField port;
     @FXML
     private TextField pId;
+    @FXML
+    private Button videoChat;
 
 
 
@@ -58,11 +65,15 @@ public class Controller implements Initializable {
 
 
 
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mainHanlder = new MainHanlder();
+
         connectButton();
         sendButton();
+        videoChatButton();
         callBackHandler();
     }
 
@@ -116,6 +127,38 @@ public class Controller implements Initializable {
                     alert.showAndWait();
 
                 }
+            }
+        });
+    }
+
+
+    public void videoChatButton(){
+        videoChat.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    if (StringUtils.isEmpty(pId.getText())) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("请输入要视频的ID");
+                        alert.showAndWait();
+                        return;
+                    }
+                    Stage stage = new Stage();
+                    Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("videoChat.fxml"));
+                    Scene scene = new Scene(root, 1200, 457);
+                    scene.getStylesheets().add("sample.css");
+                    stage.setTitle("视频聊天");
+                    stage.setScene(scene);
+                    stage.getIcons().add(new Image(getClass().getClassLoader().getResource("images/logo.png").toURI().toString()));
+                    stage.show();
+                    mainHanlder.setChannelFuture(future);
+                    VideoChatController.mainHanlder = mainHanlder;
+                    VideoChatController.pid = pId.getText();
+                }catch (Exception e){
+                    logger.error(e.getMessage());
+                }
+
+
             }
         });
     }

@@ -1,9 +1,6 @@
 package com.jian.util;
 
-import com.jian.handler.AlertHandler;
-import com.jian.handler.CidHandler;
-import com.jian.handler.ConnectedHandler;
-import com.jian.handler.MessageHanlder;
+import com.jian.handler.*;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,6 +24,9 @@ public class MainHanlder extends ChannelInboundHandlerAdapter{
     private  CidHandler cidHandler;
     private  ConnectedHandler connectedHandler;
     private AlertHandler alertHandler;
+    private VideoHanlder videoHanlder;
+
+    private ChannelFuture channelFuture ;
 
 
 
@@ -35,13 +35,30 @@ public class MainHanlder extends ChannelInboundHandlerAdapter{
 
     private int s = 1 ;
 
+    public  void  setChannelFuture(ChannelFuture future){
+        this.channelFuture = future;
+    }
+
     public    void send(String s , ChannelFuture   future){
+        if (future==null){
+            alertHandler.alert("服务器通信失败");
+            return;
+        }
+
         boolean suc =  future.channel().writeAndFlush(s).isVoid();
         logger.info("发送信息"+suc);
     }
 
     public void sendObj(ReslutUtil reslutUtil , ChannelFuture future){
         future.channel().writeAndFlush(reslutUtil);
+    }
+    public void sendObj(ReslutUtil reslutUtil ){
+        channelFuture.channel().writeAndFlush(reslutUtil);
+    }
+    public    void send(String s){
+
+        boolean suc =  channelFuture.channel().writeAndFlush(s).isVoid();
+        logger.info("发送信息"+suc);
     }
 
 
@@ -63,7 +80,10 @@ public class MainHanlder extends ChannelInboundHandlerAdapter{
         this.alertHandler = _AlertHandler;
         return  this;
     }
-
+     public  MainHanlder setVedioImage(VideoHanlder _VedioImage){
+        this.videoHanlder = _VedioImage;
+        return  this;
+     }
 
 
     @Override
@@ -100,6 +120,8 @@ public class MainHanlder extends ChannelInboundHandlerAdapter{
         }
         if(msg instanceof  String)
             messageHanlder.setTextArea(((String)msg));
+        if(msg instanceof byte[])
+            videoHanlder.setVideoImage(msg);
 
     }
 
